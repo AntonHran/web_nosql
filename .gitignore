@@ -1,0 +1,13 @@
+/.idea
+/celery
+/pub_sub
+/rabbit_MQ
+/redis
+connection.py
+create.py
+models.py
+read.py
+remove.py
+test_db.py
+update.py
+/__pycache__

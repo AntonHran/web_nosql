@@ -1,13 +1,14 @@
 from pathlib import Path
 from datetime import datetime
+from pprint import pprint
 
 from models_ import Author, Quote
 from connection_ import conn
 from validation import validation, validate
 
 
-author_path = Path('authors.json')
-quotes_path = Path('quotes.json')
+author_path = Path('async_authors.json')
+quotes_path = Path('async_quotes.json')
 
 
 @validation
@@ -35,15 +36,20 @@ def seed_quotes(quotes_data: list[dict], authors: list[Author]) -> None:
 
 def seed_main() -> None:
     data_authors = validate(author_path, Author)
+    auth = []
     if data_authors:
-        authors_ = seed_authors(data_authors)
-        data_quotes = validate(quotes_path, Quote)
-        if data_quotes:
-            seed_quotes(data_quotes, authors_)
-        else:
-            print('Do not write the same quotes!')
+        auth = seed_authors(data_authors)
     else:
         print('Do not write the same authors!')
+    data_quotes = validate(quotes_path, Quote)
+    # pprint(data_quotes)
+    if data_quotes and auth:
+        seed_quotes(data_quotes, auth)
+    elif data_quotes and not auth:
+        authors = Author.objects()
+        seed_quotes(data_quotes, authors)
+    else:
+        print('Do not write the same quotes!')
 
 
 if __name__ == '__main__':

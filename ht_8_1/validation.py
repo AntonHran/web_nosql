@@ -52,7 +52,10 @@ def find_attribute(obj: Document, key_file: str) -> str:
 
 def cut_file(fragment: list, data: list) -> list[dict]:
     for rec in fragment:
-        data.remove(rec)
+        try:
+            data.remove(rec)
+        except ValueError as err:
+            print(err)
     return data
 
 
